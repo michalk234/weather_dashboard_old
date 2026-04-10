@@ -1,5 +1,14 @@
+const BACKEND_BASE_URL = "https://weather-gateway-service.onrender.com";
+
 export async function fetchWeather(city) {
-  const API_KEY = '9591c51f42b98fc77434e3e78a513728';
-  const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
+  const url = new URL("/api/weather/current", BACKEND_BASE_URL);
+  url.searchParams.set("city", city);
+
+  const res = await fetch(url.toString());
+
+  if (!res.ok) {
+    throw new Error(`Backend error: ${res.status}`);
+  }
+
   return res.json();
 }
